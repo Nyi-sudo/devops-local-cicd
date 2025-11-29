@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/<your-username>/devops-local-cicd.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'chmod +x scripts/build.sh'
+                sh './scripts/build.sh'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t local-devops-app .'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'chmod +x scripts/deploy.sh'
+                sh './scripts/deploy.sh'
+            }
+        }
+    }
+}
+
