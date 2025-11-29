@@ -3,11 +3,18 @@ pipeline {
     
     stages {
         stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/<your-username>/devops-local-cicd.git'
-            }
-        }
+    		steps {
+        		checkout([
+            			$class: 'GitSCM',
+            			branches: [[name: '*/main']],
+            			userRemoteConfigs: [[
+                			url: 'https://github.com/Nyi-sudo/devops-local-cicd.git',
+                			credentialsId: 'github-creds'
+            				]]
+        			])
+    			}
+		}	
+
 
         stage('Install Dependencies') {
             steps {
